@@ -23,3 +23,8 @@ function child_enqueue_styles() {
 }
 
 add_action( 'wp_enqueue_scripts', 'child_enqueue_styles', 15 );
+// Limit Heartbeat API 
+function limit_heartbeat() {
+    wp_deregister_script('heartbeat');
+}
+add_action('init', 'limit_heartbeat', 1);
