@@ -47,3 +47,14 @@ function limit_comment_queries($comments) {
     return $comments;
 }
 add_filter('comments_array', 'limit_comment_queries');
+// Lazy Load comments 
+function lazy_load_comments($content) {
+    if (is_singular() && is_comments_popup()) {
+        return $content;
+    } elseif (is_singular() && comments_open() && get_option('thread_comments')) {
+        return $content . get_comments_number();
+    } else {
+        return $content;
+    }
+}
+add_filter('the_content', 'lazy_load_comments');
