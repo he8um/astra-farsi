@@ -39,4 +39,11 @@ add_action('init', 'limit_heartbeat', 1);
         wp_redirect('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], 301);
         exit();
     }
-    
+    // Optimize Comment Queries
+function limit_comment_queries($comments) {
+    if (is_single() && comments_open() && get_option('thread_comments')) {
+        return get_comments(array('number' => 10)); // Change the number as needed
+    }
+    return $comments;
+}
+add_filter('comments_array', 'limit_comment_queries');
