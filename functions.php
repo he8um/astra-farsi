@@ -58,3 +58,14 @@ function lazy_load_comments($content) {
     }
 }
 add_filter('the_content', 'lazy_load_comments');
+// Enforce Strong Passwords
+function enforce_strong_passwords() {
+    $min_password_length = 12; // Minimum password length
+
+    if (strlen($_POST['pass1']) < $min_password_length) {
+        $error = new WP_Error('weak_password', __('Password is too weak.'));
+        return $error;
+    }
+}
+add_filter('user_profile_update_errors', 'enforce_strong_passwords', 10, 3);
+add_filter('registration_errors', 'enforce_strong_passwords', 10, 3);
